@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Paper Rock Scissors</title>
+    <script>
+      const totalGames = 1;
+      let pScore = 0;
+      let cScore = 0;
+      let gamesPlayed = 0;
+
+      function computerPlay() {
+        return randomSelection();
+      }
+
+      function randomSelection() {
+        // Adding choices to array
+        const arr = ["rock", "paper", "scissors"];
+        var rand = Math.random(); // Using built-in Math library to establish random number between 0 and 1. e.g. 0.5
+        rand *= arr.length; // Takes random number & multiplies by length of array e.g. 0.5 x 2 = 1
+        rand = Math.floor(rand); // Rounds down to nearest integer e.g. 1.5 becomes 1 (paper)
+        return arr[rand];
+      }
+
+      function getPlayerSelection() {
+        return prompt("What's your choice? Rock, Paper, or Scissors?")
+          .toString()
+          .toLowerCase();
+      }
+
+      function playRound(player, comp) {
+        switch (player + comp) {
+          // Winning scenarios
+          case "rockscissors":
+          case "paperrock":
+          case "scissorspaper":
+            return win(player, comp);
+
+          // Losing scenarios
+          case "rockpaper":
+          case "paperscissors":
+          case "scissorsrock":
+            return lose(player, comp);
+
+          // Tie scenarios
+          case "rockrock":
+          case "paperpaper":
+          case "scissorsscissors":
+            return tie(player, comp);
+        }
+      }
+
+      function win(player, comp) {
+        pScore++;
+        return `You Win! ${player} beats ${comp}`;
+      }
+
+      function lose(player, comp) {
+        cScore++;
+        return `You Lose! ${comp} beats ${player}`;
+      }
+
+      function tie(player, comp) {
+        return `Tie! You both chose ${player}.`;
+      }
+
+      function game() {
+        while (gamesPlayed < totalGames) {
+          playRound(getPlayerSelection(), computerPlay());
+          gamesPlayed += 1;
+        }
+        return `Final Score ->  Player: ${pScore}, Computer: ${cScore}`;
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
