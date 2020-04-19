@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Paper Rock Scissors</title>
+
+    <style>
+      button {
+        height: 50px;
+        background-color: #4f72b5;
+        width: 100px;
+        color: white;
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        height: 100vh;
+      "
+    >
+      <div
+        id="results"
+        style="
+          display: flex;
+          align-self: center;
+          width: 400px;
+          flex-direction: column;
+          justify-self: center;
+          margin-bottom: 50px;
+        "
+      >
+        <div style="font-size: large;">Results</div>
+        <div>Round: <span>0</span></div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Player: <span id="pScore">0</span></span>
+          <span>Computer: <span id="cScore">0</span></span>
+          <span>Tie: <span id="tScore">0</span></span>
+        </div>
+        <div style="margin-top: 25px;" id="text-result">Choose your weapon</div>
+      </div>
+      <div
+        style="
+          display: flex;
+          align-self: center;
+          width: 400px;
+          justify-content: space-between;
+        "
+      >
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  const totalGames = 1;
+  let pScore = 0;
+  let cScore = 0;
+  let tScore = 0;
+  let gamesPlayed = 0;
+
+  function playerSelection(e) {
+    switch (e.id) {
+      case "rock":
+        return "rock";
+      case "paper":
+        return "paper";
+      case "scissors":
+        return "scissors";
+    }
+  }
+
+  function computerPlay() {
+    return randomSelection();
+  }
+
+  function randomSelection() {
+    // Adding choices to array
+    const arr = ["rock", "paper", "scissors"];
+    var rand = Math.random(); // Using built-in Math library to establish random number between 0 and 1. e.g. 0.5
+    rand *= arr.length; // Takes random number & multiplies by length of array e.g. 0.5 x 2 = 1
+    rand = Math.floor(rand); // Rounds down to nearest integer e.g. 1.5 becomes 1 (paper)
+    return arr[rand];
+  }
+
+  function playRound() {
+    const player = playerSelection(this);
+    const comp = computerPlay();
+    switch (player + comp) {
+      // Winning scenarios
+      case "rockscissors":
+      case "paperrock":
+      case "scissorspaper":
+        return win(player, comp);
+
+      // Losing scenarios
+      case "rockpaper":
+      case "paperscissors":
+      case "scissorsrock":
+        return lose(player, comp);
+
+      // Tie scenarios
+      case "rockrock":
+      case "paperpaper":
+      case "scissorsscissors":
+        return tie(player, comp);
+    }
+  }
+
+  function win(player, comp) {
+    pScore++;
+    document.getElementById("pScore").innerHTML = pScore;
+    document.getElementById(
+      "text-result"
+    ).innerText = `You Win! ${player} beats ${comp}`;
+  }
+
+  function lose(player, comp) {
+    cScore++;
+    document.getElementById("cScore").innerHTML = cScore;
+    document.getElementById(
+      "text-result"
+    ).innerText = `You Lose! ${comp} beats ${player}`;
+  }
+
+  function tie(player, comp) {
+    tScore++;
+    document.getElementById("tScore").innerHTML = tScore;
+    document.getElementById(
+      "text-result"
+    ).innerText = `Tie! You both chose ${player}.`;
+  }
+
+  function game() {
+    while (gamesPlayed < totalGames) {
+      playRound(getPlayerSelection(), computerPlay());
+      gamesPlayed += 1;
+    }
+    return `Final Score ->  Player: ${pScore}, Computer: ${cScore}`;
+  }
+
+  const rock = document
+    .getElementById("rock")
+    .addEventListener("click", playRound);
+  const paper = document
+    .getElementById("paper")
+    .addEventListener("click", playRound);
+  const scissors = document
+    .getElementById("scissors")
+    .addEventListener("click", playRound);
+  console.log(pScore, cScore);
+</script>
